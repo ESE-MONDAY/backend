@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User table
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique @db.VarChar(255)
+  password  String
+  createdAt DateTime @default(now())
+
+  // Relations
+  createdMovies    Movie[]           @relation("MovieCreator")
+  watchlistItems   WatchlistItem[]
+  authTransactions AuthTransaction[]
+}
+
+// Authentication transactions table
+model AuthTransaction {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshToken String   @unique
+  expiresAt    DateTime
+}
+
+// Movie table
+
+model Movie {
+  id          String   @id @default(uuid())
+  title       String   @unique
+  overview    String?
+  releaseYear Int
+  genres      String[] @default([])
+  runtime     Int?
+  posterUrl   String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+
+  //Relations
+  creator        User            @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  watchlistItems WatchlistItem[]
+}
+
+// Watchlist table
+
+model WatchlistItem {
+  id        String          @id @default(uuid())
+  userId    String
+  movieId   String
+  status    WatchlistStatus @default(PLANNED)
+  rating    Int?
+  notes     String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now())
+  // Relations
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie     Movie           @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId]) // Prevent duplicate entries for same user and movie
+}
+
+enum WatchlistStatus {
+  PLANNED
+  WATCHING
+  COMPLETED
+}
