@@ -9,7 +9,7 @@ const options = {
       description: 'A comprehensive API for managing movies and user watchlists with authentication',
       contact: {
         name: 'Ese Monday',
-        email: 'ese@example.com',
+        email: 'mondayese8@gmail.com',
       },
     },
     servers: [

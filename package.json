@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --env-file=.env src/server.js",
-    "start": "node --env-file=.env src/server.js",
+    "start": "node src/server.js",
     "seedmovies": "node --env-file=.env prisma/seed.js"
   },
   "keywords": [],
