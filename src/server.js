@@ -2,6 +2,8 @@ import express from 'express';
 import { connectToDatabase, disconnectFromDatabase } from './config/db.js';
 import v1Routes from './routes/v1/index.js';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpecs } from './config/swagger.js';
 
 const app = express();
 const port = 5001;
@@ -9,6 +11,10 @@ const port = 5001;
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+
+// Swagger API Documentation
+app.use('/api/docs', swaggerUi.serve);
+app.get('/api/docs', swaggerUi.setup(swaggerSpecs, { swaggerOptions: { persistAuthorization: true } }));
 
 connectToDatabase();
 app.use('/api/v1', v1Routes);
