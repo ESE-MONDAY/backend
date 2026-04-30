@@ -8,6 +8,8 @@ import { swaggerSpecs } from './config/swagger.js';
 const app = express();
 const port = process.env.PORT || 5001;
 
+app.set('trust proxy', true);
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

@@ -14,8 +14,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5001',
-        description: 'Development server',
+        url: process.env.SWAGGER_SERVER_URL || 'http://localhost:8080',
+        description: 'Local server via Nginx or direct host',
       },
       {
         url: 'https://api.example.com',
